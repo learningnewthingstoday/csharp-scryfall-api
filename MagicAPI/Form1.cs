@@ -21,12 +21,21 @@ namespace MagicAPI
 		public PictureBox clickedBox;
 		public string fPath;
 		public Dictionary<string, Card> cardCache = new Dictionary<string, Card>();
-		
+		public string url = "https://api.scryfall.com/cards/random";
+
 
 		public Form1()
 		{
-			
+
 			InitializeComponent();
+			pictureBoxes = new Dictionary<string, PictureBox>();
+			pictureBoxes.Add("pictureBox1", pictureBox1);
+			pictureBoxes.Add("pictureBox2", pictureBox2);
+			pictureBoxes.Add("pictureBox3", pictureBox3);
+			pictureBoxes.Add("pictureBox4", pictureBox4);
+			pictureBoxes.Add("pictureBox5", pictureBox5);
+			pictureBoxes.Add("pictureBox6", pictureBox6);
+			pictureBoxes.Add("pictureBox7", pictureBox7);
 			label1.Visible = false;
 			label2.Visible = false;
 			label3.Visible = false;
@@ -36,9 +45,9 @@ namespace MagicAPI
 
 			// Try to create the directory.
 			dw("Creating temporary directory if none exists.");
-				DirectoryInfo di = Directory.CreateDirectory("tmp");
-				Debug.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime("tmp"));
-				fPath = $"{Directory.GetCurrentDirectory()}\\tmp\\";
+			DirectoryInfo di = Directory.CreateDirectory("tmp");
+			Debug.WriteLine("The directory was created successfully at {0}.", Directory.GetCreationTime("tmp"));
+			fPath = $"{Directory.GetCurrentDirectory()}\\tmp\\";
 		}
 
 		async Task<Card> GetCardAsync(string path)
@@ -70,16 +79,6 @@ namespace MagicAPI
 
 		private async void button1_Click(object sender, EventArgs e)
 		{
-			var url = "https://api.scryfall.com/cards/random";
-			pictureBoxes = new Dictionary<string, PictureBox>();
-			pictureBoxes.Add("pictureBox1", pictureBox1);
-			pictureBoxes.Add("pictureBox2", pictureBox2);
-			pictureBoxes.Add("pictureBox3", pictureBox3);
-			pictureBoxes.Add("pictureBox4", pictureBox4);
-			pictureBoxes.Add("pictureBox5", pictureBox5);
-			pictureBoxes.Add("pictureBox6", pictureBox6);
-			pictureBoxes.Add("pictureBox7", pictureBox7);
-
 			foreach (var pb in pictureBoxes)
 			{
 				pb.Value.ImageLocation = null;
@@ -87,12 +86,12 @@ namespace MagicAPI
 				while (pb.Value.ImageLocation is null)
 				{
 					Card card = await GetCardAsync(url);
-					
+
 					cacheImage(card.ImageUris.Normal, card.OracleId);
 
-						card.imageSrc = $"{Directory.GetCurrentDirectory()}\\tmp\\{card.OracleId}.png";
-						card.pictureBoxName = pb.Value.Name;
-						cacheCard(pb.Value.Name, card);
+					card.imageSrc = $"{Directory.GetCurrentDirectory()}\\tmp\\{card.OracleId}.png";
+					card.pictureBoxName = pb.Value.Name;
+					cacheCard(pb.Value.Name, card);
 					pb.Value.ImageLocation = card.imageSrc;
 				}
 			}
@@ -131,30 +130,30 @@ namespace MagicAPI
 				dw("clickedPicture == pb.Name");
 				unselectPictureBox(pb);
 				clickedPicture = null;
-				clickedBox = null;
+				//clickedBox = null;
 			}
 			if (clickedPicture != pb.Name)
 			{
 				dw("clickedPicture is not equal to pb.Name");
-				dw("unselecting clickedbox");
-				unselectPictureBox(clickedBox);
+				//dw("unselecting clickedbox");
+				//unselectPictureBox(clickedBox);
 				clickedPicture = pb.Name;
-				clickedBox = pb;
+				//clickedBox = pb;
 				selectPictureBox(pb);
 
-				
+
 			}
 			if (clickedPicture is null)
 			{
 				dw("clickedPicture is null");
 				clickedPicture = pb.Name;
 				selectPictureBox(pb);
-				clickedBox = pb;
+				//clickedBox = pb;
 				//string name = Regex.Replace(pb.Value.ImageLocation, @"(?<=\\)[^\\]*\.png", "");
 				//textBox1.Text = cardCache.First(p => p.OracleId == name).ToString();
 			}
-			
-			
+
+
 		}
 
 		private void unselectPictureBox(PictureBox pb)
@@ -170,7 +169,7 @@ namespace MagicAPI
 			pb.Height = 300;
 			pb.Left += 15;
 			pb.Top += 40;
-			clickedBox = null;
+			//clickedBox = null;
 		}
 
 		private void selectPictureBox(PictureBox pb)
@@ -235,7 +234,7 @@ namespace MagicAPI
 			{
 				File.Delete(fileName);
 			}
-				
+
 		}
 
 		public void dw(string message)
