@@ -17,7 +17,7 @@ namespace MagicAPI
 	{
 		static HttpClient client = new HttpClient();
 		public Dictionary<string, PictureBox> pictureBoxes;
-		public string clickedPicture;
+		public string clickedPicture = "";
 		public PictureBox clickedBox;
 		public string fPath;
 		public Dictionary<string, Card> cardCache = new Dictionary<string, Card>();
@@ -125,33 +125,34 @@ namespace MagicAPI
 		private void pictureBox_MouseClick(object sender, MouseEventArgs e)
 		{
 			PictureBox pb = sender as PictureBox;
-			if (clickedPicture == pb.Name)
+			
+			
+			if (clickedPicture == "")
 			{
-				dw("clickedPicture == pb.Name");
-				unselectPictureBox(pb);
-				clickedPicture = null;
-				//clickedBox = null;
-			}
-			if (clickedPicture != pb.Name)
-			{
-				dw("clickedPicture is not equal to pb.Name");
-				//dw("unselecting clickedbox");
-				//unselectPictureBox(clickedBox);
-				clickedPicture = pb.Name;
-				//clickedBox = pb;
-				selectPictureBox(pb);
-
-
-			}
-			if (clickedPicture is null)
-			{
-				dw("clickedPicture is null");
+				dw("clickedPicture is blank");
 				clickedPicture = pb.Name;
 				selectPictureBox(pb);
-				//clickedBox = pb;
-				//string name = Regex.Replace(pb.Value.ImageLocation, @"(?<=\\)[^\\]*\.png", "");
-				//textBox1.Text = cardCache.First(p => p.OracleId == name).ToString();
+				clickedBox = pb;
 			}
+			else if (clickedPicture == pb.Name)
+				{
+					dw("clickedPicture == pb.Name");
+					unselectPictureBox(pb);
+					clickedPicture = "";
+					//clickedBox = null;
+				}
+				else if (clickedPicture != pb.Name)
+				{
+					dw("clickedPicture is not equal to pb.Name");
+					dw("unselecting clickedbox");
+					unselectPictureBox(clickedBox);
+					clickedPicture = pb.Name;
+					clickedBox = pb;
+					selectPictureBox(pb);
+
+
+				}
+			
 
 
 		}
