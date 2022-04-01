@@ -91,7 +91,8 @@ namespace MagicAPI
 
 					card.imageSrc = $"{Directory.GetCurrentDirectory()}\\tmp\\{card.OracleId}.png";
 					card.pictureBoxName = pb.Value.Name;
-					cacheCard(pb.Value.Name, card);
+					pb.Value.Tag = card.OracleId;
+					cacheCard((string)pb.Value.Tag, card);
 					pb.Value.ImageLocation = card.imageSrc;
 				}
 			}
@@ -187,7 +188,7 @@ namespace MagicAPI
 			pb.Left -= 15;
 			pb.Top -= 40;
 			pictureBox8.ImageLocation = pb.ImageLocation;
-			Card cardPick = cardCache.GetValueOrDefault(pb.Name);
+			Card cardPick = cardCache.GetValueOrDefault(pb.Tag.ToString());
 			textBox1.Visible = true;
 			textBox2.Visible = true;
 			richTextBox1.Visible = true;
@@ -220,7 +221,7 @@ namespace MagicAPI
 
 		private void cacheCard(string pbName, Card card)
 		{
-			cardCache.Add(card.pictureBoxName, card);
+			cardCache.Add(card.OracleId, card);
 		}
 
 		private void Form1_FormClosed(object sender, FormClosedEventArgs e)
